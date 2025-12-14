@@ -17,13 +17,6 @@ class Day01 {
     }
   }
 
-  // This time, you'll need to figure out exactly how often each number from the
-  // left list
-  // appears in the right list. Calculate a total similarity score by adding up
-  // each number
-  // in the left list after multiplying it by the number of times that number
-  // appears in the
-  // right list.
   class Part2 {
     fun solve(input: String): Int {
       val (left, right) = parseInput(input)

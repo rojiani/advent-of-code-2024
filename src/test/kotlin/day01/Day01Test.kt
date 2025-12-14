@@ -29,6 +29,6 @@ class Day01Test {
   @Test
   fun `part 2 input`() {
     val input = readInputText("day01-input.txt")
-    part2.solve(input).shouldBe(0)
+    part2.solve(input).shouldBe(21607792)
   }
 }
