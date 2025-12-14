@@ -1,4 +1,4 @@
-package com.rojiani.day01
+package day01
 
 import kotlin.math.abs
 
@@ -18,6 +18,21 @@ class Day01 {
             return totalDistance
         }
     }
+
+    // This time, you'll need to figure out exactly how often each number from the left list
+    // appears in the right list. Calculate a total similarity score by adding up each number
+    // in the left list after multiplying it by the number of times that number appears in the
+    // right list.
+    class Part2 {
+        fun solve(input: String): Int {
+            val (left, right) = parseInput(input)
+
+            val rightNumberCounts = right.groupingBy { it }.eachCount()
+            return left.fold(0) { similarityScore, leftNumber ->
+                similarityScore + (leftNumber * rightNumberCounts.getOrDefault(leftNumber, 0))
+            }
+        }
+    }
 }
 
 internal fun parseInput(input: String): Pair<List<Int>, List<Int>> {
@@ -25,12 +40,10 @@ internal fun parseInput(input: String): Pair<List<Int>, List<Int>> {
     val left = mutableListOf<Int>()
     val right = mutableListOf<Int>()
     for (line in lines) {
-        val numbers = line.split("\\s".toRegex()).map { it.toInt() }
-        check(numbers.size == 2) { "Line $line has more than two numbers" }
-        left.add(numbers[0])
-        right.add(numbers[1])
+        val numbers = line.trim().split("\\s".toRegex()).filter { it.isNotEmpty() }.map { it.toInt() }
+        left += numbers[0]
+        right += numbers[1]
     }
-    check(left.size == right.size)
     return Pair(left, right)
 }
 

@@ -1,4 +1,4 @@
-package com.rojiani.utils
+package utils
 
 import java.io.File
 
