@@ -2,13 +2,16 @@ import org.codehaus.groovy.tools.shell.util.Logger.io
 
 plugins {
     kotlin("jvm") version "2.2.21"
+    id("com.diffplug.spotless") version "8.1.0"
 }
 
 group = "com.rojiani"
 version = "1.0-SNAPSHOT"
 
 repositories {
+    google()
     mavenCentral()
+    maven("https://plugins.gradle.org/m2/")
 }
 
 val kotestVersion = "6.0.0.M1"
@@ -29,3 +32,6 @@ kotlin {
 tasks.test {
     useJUnitPlatform()
 }
+
+spotless { kotlin { ktfmt("0.59").googleStyle() } }
+
