@@ -19,4 +19,16 @@ class Day06Test {
     val input = readInputText("day06-input.txt")
     part1.solve(input).shouldBe(5269)
   }
+
+  @Test
+  fun `part 2 sample input`() {
+    val input = readInputText("day06-sample.txt")
+    part2.solve(input).shouldBe(6)
+  }
+
+  @Test
+  fun `part 2 input`() {
+    val input = readInputText("day06-input.txt")
+    part2.solve(input).shouldBe(1957)
+  }
 }
