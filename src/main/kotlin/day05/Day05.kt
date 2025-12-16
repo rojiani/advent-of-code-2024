@@ -5,6 +5,11 @@ import com.google.common.graph.ImmutableGraph
 
 typealias PageNumber = Int
 
+/**
+ * Day 5: Print Queue
+ *
+ * https://adventofcode.com/2024/day/5
+ */
 class Day05 {
 
   class Part1 {

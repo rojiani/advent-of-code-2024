@@ -1,5 +1,10 @@
 package day04
 
+/**
+ * Day 4: Ceres Search
+ *
+ * https://adventofcode.com/2024/day/4
+ */
 class Day04 {
 
   class Part1 {

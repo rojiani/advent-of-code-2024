@@ -2,6 +2,11 @@ package day01
 
 import kotlin.math.abs
 
+/**
+ * Day 1: Historian Hysteria
+ *
+ * https://adventofcode.com/2024/day/1
+ */
 class Day01 {
 
   class Part1 {

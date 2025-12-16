@@ -4,6 +4,11 @@ import kotlin.math.abs
 
 typealias Report = List<Int>
 
+/**
+ * Day 2: Red-Nosed Reports
+ *
+ * https://adventofcode.com/2024/day/2
+ */
 class Day02 {
 
   class Part1 {

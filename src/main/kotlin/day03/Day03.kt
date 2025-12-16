@@ -2,6 +2,11 @@ package day03
 
 import day03.Day03.Part1.MultiplyInstruction
 
+/**
+ * Day 3: Mull It Over
+ *
+ * https://adventofcode.com/2024/day/3
+ */
 class Day03 {
 
   class Part1 {
