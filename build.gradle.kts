@@ -17,6 +17,7 @@ repositories {
 val kotestVersion = "6.0.0.M1"
 
 dependencies {
+    implementation("com.google.guava:guava:33.5.0-jre")
     testImplementation(kotlin("test"))
     testImplementation(platform("org.junit:junit-bom:6.1.0-M1"))
     testImplementation("org.junit.jupiter:junit-jupiter")
