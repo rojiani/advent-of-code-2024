@@ -1,7 +1,6 @@
 package day10
 
 import io.kotest.matchers.shouldBe
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import utils.readInputText
 
@@ -90,17 +89,15 @@ class Day10Test {
     part1.solve(input).shouldBe(782)
   }
 
-  @Disabled("TODO")
   @Test
   fun `part 2 sample input`() {
     val input = readInputText("day10-sample.txt")
-    part2.solve(input).shouldBe(0)
+    part2.solve(input).shouldBe(81)
   }
 
-  @Disabled("TODO")
   @Test
   fun `part 2 input`() {
     val input = readInputText("day10-input.txt")
-    part2.solve(input).shouldBe(0)
+    part2.solve(input).shouldBe(1694)
   }
 }
