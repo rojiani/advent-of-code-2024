@@ -9,11 +9,12 @@ import utils.readInputText
 
 class Day12Test {
   private val part1 = Day12.Part1()
+  private val part2 = Day12.Part2()
 
   @Test
-  fun `getAllRegions - simple example`() {
+  fun `part 1 getAllRegions - simple example`() {
     val grid = parseInput(SAMPLE_INPUT_1)
-    val regionsByPlant: Map<Plant, List<Region>> = part1.getAllRegions(grid)
+    val regionsByPlant: Map<Plant, List<Region>> = getAllRegions(grid, FencePricing.STANDARD)
     regionsByPlant.keys.shouldContainExactlyInAnyOrder(
       Plant('A'),
       Plant('B'),
@@ -64,9 +65,9 @@ class Day12Test {
   }
 
   @Test
-  fun `getAllRegions - nested example`() {
+  fun `part 1 getAllRegions - nested example`() {
     val grid = parseInput(SAMPLE_INPUT_2)
-    val regionsByPlant: Map<Plant, List<Region>> = part1.getAllRegions(grid)
+    val regionsByPlant: Map<Plant, List<Region>> = getAllRegions(grid, FencePricing.STANDARD)
     regionsByPlant.keys.shouldContainExactlyInAnyOrder(Plant('O'), Plant('X'))
 
     // The above map contains five regions, one containing all of the O garden plots, and the other
@@ -114,6 +115,85 @@ class Day12Test {
   fun `part 1 input`() {
     val input = readInputText("day12-input.txt")
     part1.solve(input) shouldBe 1431316L
+  }
+
+  @Test
+  fun `part 2 getAllRegions - simple example`() {
+    val grid = parseInput(SAMPLE_INPUT_1)
+    val regionsByPlant: Map<Plant, List<Region>> = getAllRegions(grid, FencePricing.BULK_DISCOUNT)
+    regionsByPlant.keys.shouldContainExactlyInAnyOrder(
+      Plant('A'),
+      Plant('B'),
+      Plant('C'),
+      Plant('D'),
+      Plant('E'),
+    )
+
+    val plantARegion = regionsByPlant.getValue(Plant('A')).single()
+    plantARegion.perimeter shouldBe 4
+
+    val plantBRegion = regionsByPlant.getValue(Plant('B')).single()
+    plantBRegion.perimeter shouldBe 4
+
+    val plantCRegion = regionsByPlant.getValue(Plant('C')).single()
+    plantCRegion.perimeter shouldBe 8
+
+    val plantDRegion = regionsByPlant.getValue(Plant('D')).single()
+    plantDRegion.perimeter shouldBe 4
+
+    val plantERegion = regionsByPlant.getValue(Plant('E')).single()
+    plantERegion.perimeter shouldBe 4
+  }
+
+  @Test
+  fun `part 2 example 1`() {
+    part2.solve(SAMPLE_INPUT_1) shouldBe 80L
+  }
+
+  @Test
+  fun `part 2 example 2`() {
+    part2.solve(SAMPLE_INPUT_2) shouldBe 436L
+  }
+
+  @Test
+  fun `part 2 example 3`() {
+    val input =
+      """
+      EEEEE
+      EXXXX
+      EEEEE
+      EXXXX
+      EEEEE
+      """
+        .trimIndent()
+    part2.solve(input) shouldBe 236L
+  }
+
+  @Test
+  fun `part 2 example 4`() {
+    val input =
+      """
+      AAAAAA
+      AAABBA
+      AAABBA
+      ABBAAA
+      ABBAAA
+      AAAAAA
+      """
+        .trimIndent()
+    part2.solve(input) shouldBe 368L
+  }
+
+  @Test
+  fun `part 2 sample`() {
+    val input = readInputText("day12-sample.txt")
+    part2.solve(input) shouldBe 1206L
+  }
+
+  @Test
+  fun `part 2 input`() {
+    val input = readInputText("day12-input.txt")
+    part2.solve(input) shouldBe 821428L
   }
 
   companion object {

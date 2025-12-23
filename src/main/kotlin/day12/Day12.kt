@@ -12,63 +12,20 @@ class Day12 {
   class Part1 {
     fun solve(input: String): Long {
       val grid: List<List<Plant>> = parseInput(input)
-      val regionsByPlant: Map<Plant, List<Region>> = getAllRegions(grid)
+      val regionsByPlant: Map<Plant, List<Region>> =
+        getAllRegions(grid, fencePricing = FencePricing.STANDARD)
       val regions: List<Region> = regionsByPlant.values.flatten()
       return regions.sumOf { it.fencePrice }
-    }
-
-    internal fun getAllRegions(grid: List<List<Plant>>): Map<Plant, List<Region>> {
-      val plotsInARegion = mutableSetOf<Plot>()
-      val regionsByPlant = mutableMapOf<Plant, List<Region>>()
-
-      for (r in grid.indices) {
-        for (c in grid[r].indices) {
-          if (grid.plotAt(r, c) !in plotsInARegion) {
-            val region = formRegion(grid, start = grid.plotAt(r, c), plotsInARegion)
-            regionsByPlant[region.plant] =
-              regionsByPlant.getOrDefault(region.plant, emptyList()) + region
-          }
-        }
-      }
-
-      return regionsByPlant
-    }
-
-    private fun formRegion(
-      grid: List<List<Plant>>,
-      start: Plot,
-      plotsInARegion: MutableSet<Plot>,
-    ): Region {
-      val plotsInThisRegion = mutableSetOf<Plot>()
-
-      val queue = ArrayDeque<GridCoordinate>()
-      queue.addFirst(start.coordinate)
-      val plant = grid[start.row][start.column]
-
-      while (queue.isNotEmpty()) {
-        val coordinate = queue.removeFirst()
-        val plot = grid.plotAt(coordinate)
-        plotsInARegion += plot
-        plotsInThisRegion += plot
-
-        val unvisitedNeighborsWithSamePlant =
-          plot
-            .neighbors(grid)
-            .filter { grid[it.row][it.column] == plant }
-            .filter { grid.plotAt(it) !in plotsInARegion }
-
-        for (neighbor in unvisitedNeighborsWithSamePlant) {
-          queue.addFirst(neighbor)
-        }
-      }
-
-      return Region(plant = plant, plots = plotsInThisRegion.toSet(), grid = grid)
     }
   }
 
   class Part2 {
     fun solve(input: String): Long {
-      TODO()
+      val grid: List<List<Plant>> = parseInput(input)
+      val regionsByPlant: Map<Plant, List<Region>> =
+        getAllRegions(grid, fencePricing = FencePricing.BULK_DISCOUNT)
+      val regions: List<Region> = regionsByPlant.values.flatten()
+      return regions.sumOf { it.fencePrice }
     }
   }
 }
@@ -104,7 +61,12 @@ data class Plot(val plant: Plant, val row: Int, val column: Int) {
  * When multiple garden plots are growing the same type of plant and are touching (horizontally or
  * vertically), they form a region.
  */
-data class Region(val plant: Plant, val plots: Set<Plot>, val grid: List<List<Plant>>) {
+data class Region(
+  val plant: Plant,
+  val plots: Set<Plot>,
+  val grid: List<List<Plant>>,
+  val fencePricing: FencePricing,
+) {
   val plotCoordinates: Set<GridCoordinate>
     get() = plots.map { it.coordinate }.toSet()
 
@@ -116,15 +78,113 @@ data class Region(val plant: Plant, val plots: Set<Plot>, val grid: List<List<Pl
    * touch another garden plot in the same region.
    */
   val perimeter: Int
-    get() {
-      return plots.sumOf { plot ->
-        val touchingAnotherPlot =
-          plot.neighbors(grid).count { neighbor -> neighbor in plotCoordinates }
-        4 - touchingAnotherPlot
+    get() =
+      when (fencePricing) {
+        FencePricing.STANDARD ->
+          plots.sumOf { plot ->
+            val touchingAnotherPlot =
+              plot.neighbors(grid).count { neighbor -> neighbor in plotCoordinates }
+            4 - touchingAnotherPlot
+          }
+        // Count the number of corners - this will equal the # of sides.
+        FencePricing.BULK_DISCOUNT -> plots.sumOf { it.numCorners() }
+      }
+
+  val fencePrice: Long
+    get() = area.toLong() * perimeter.toLong()
+
+  private fun Plot.numCorners(): Int =
+    listOf(
+        hasInnerTopLeftCorner(),
+        hasInnerBottomLeftCorner(),
+        hasInnerTopRightCorner(),
+        hasInnerBottomRightCorner(),
+        hasOuterTopLeftCorner(),
+        hasOuterBottomLeftCorner(),
+        hasOuterTopRightCorner(),
+        hasOuterBottomRightCorner(),
+      )
+      .count { it }
+
+  private fun Plot.hasInnerTopLeftCorner(): Boolean =
+    setOf(coordinate.up, coordinate.left).none { it in plotCoordinates }
+
+  private fun Plot.hasInnerBottomLeftCorner(): Boolean =
+    setOf(coordinate.left, coordinate.down).none { it in plotCoordinates }
+
+  private fun Plot.hasInnerTopRightCorner(): Boolean =
+    setOf(coordinate.up, coordinate.right).none { it in plotCoordinates }
+
+  private fun Plot.hasInnerBottomRightCorner(): Boolean =
+    setOf(coordinate.right, coordinate.down).none { it in plotCoordinates }
+
+  private fun Plot.hasOuterTopLeftCorner(): Boolean =
+    setOf(coordinate.up, coordinate.left).all { it in plotCoordinates } &&
+      GridCoordinate(coordinate.row - 1, coordinate.column - 1) !in plotCoordinates
+
+  private fun Plot.hasOuterTopRightCorner(): Boolean =
+    setOf(coordinate.up, coordinate.right).all { it in plotCoordinates } &&
+      GridCoordinate(coordinate.row - 1, coordinate.column + 1) !in plotCoordinates
+
+  private fun Plot.hasOuterBottomLeftCorner(): Boolean =
+    setOf(coordinate.down, coordinate.left).all { it in plotCoordinates } &&
+      GridCoordinate(coordinate.row + 1, coordinate.column - 1) !in plotCoordinates
+
+  private fun Plot.hasOuterBottomRightCorner(): Boolean =
+    setOf(coordinate.down, coordinate.right).all { it in plotCoordinates } &&
+      GridCoordinate(coordinate.row + 1, coordinate.column + 1) !in plotCoordinates
+}
+
+private fun formRegion(
+  grid: List<List<Plant>>,
+  start: Plot,
+  plotsInARegion: MutableSet<Plot>,
+  fencePricing: FencePricing,
+): Region {
+  val plotsInThisRegion = mutableSetOf<Plot>()
+
+  val queue = ArrayDeque<GridCoordinate>()
+  queue.addFirst(start.coordinate)
+  val plant = grid[start.row][start.column]
+
+  while (queue.isNotEmpty()) {
+    val coordinate = queue.removeFirst()
+    val plot = grid.plotAt(coordinate)
+    plotsInARegion += plot
+    plotsInThisRegion += plot
+
+    val unvisitedNeighborsWithSamePlant =
+      plot
+        .neighbors(grid)
+        .filter { grid[it.row][it.column] == plant }
+        .filter { grid.plotAt(it) !in plotsInARegion }
+
+    for (neighbor in unvisitedNeighborsWithSamePlant) {
+      queue.addFirst(neighbor)
+    }
+  }
+
+  return Region(plant = plant, plots = plotsInThisRegion.toSet(), grid = grid, fencePricing)
+}
+
+internal fun getAllRegions(
+  grid: List<List<Plant>>,
+  fencePricing: FencePricing,
+): Map<Plant, List<Region>> {
+  val plotsInARegion = mutableSetOf<Plot>()
+  val regionsByPlant = mutableMapOf<Plant, List<Region>>()
+
+  for (r in grid.indices) {
+    for (c in grid[r].indices) {
+      if (grid.plotAt(r, c) !in plotsInARegion) {
+        val region = formRegion(grid, start = grid.plotAt(r, c), plotsInARegion, fencePricing)
+        regionsByPlant[region.plant] =
+          regionsByPlant.getOrDefault(region.plant, emptyList()) + region
       }
     }
+  }
 
-  val fencePrice: Long = area.toLong() * perimeter.toLong()
+  return regionsByPlant
 }
 
 internal fun parseInput(input: String): List<List<Plant>> =
@@ -135,3 +195,10 @@ private fun List<List<Plant>>.plotAt(row: Int, column: Int): Plot =
 
 private fun List<List<Plant>>.plotAt(coordinate: GridCoordinate): Plot =
   Plot(plant = this[coordinate.row][coordinate.column], coordinate = coordinate)
+
+enum class FencePricing {
+  /** Part 1 */
+  STANDARD,
+  /** Part 2 */
+  BULK_DISCOUNT,
+}
