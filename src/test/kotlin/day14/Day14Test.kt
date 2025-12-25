@@ -69,17 +69,10 @@ class Day14Test {
     part1.solve(input).shouldBe(225521010)
   }
 
-  @Disabled("TODO")
-  @Test
-  fun `part 2 sample input`() {
-    val input = readInputText("day14-sample.txt")
-    part2.solve(input).shouldBe(0)
-  }
-
-  @Disabled("TODO")
+  @Disabled("The code generates images that need to be manually inspected")
   @Test
   fun `part 2 input`() {
     val input = readInputText("day14-input.txt")
-    part2.solve(input).shouldBe(0)
+    part2.solve(input).shouldBe(7774)
   }
 }

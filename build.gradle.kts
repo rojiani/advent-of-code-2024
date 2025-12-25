@@ -23,6 +23,7 @@ val guavaVersion = "33.5.0-jre"
 dependencies {
     implementation("org.ojalgo:ojalgo:$ojAlgoVersion")
     api("com.google.guava:guava:$guavaVersion")
+    implementation("com.sksamuel.scrimage:scrimage-core:4.3.5")
     
     testImplementation(platform("org.junit:junit-bom:$junitVersion"))
     testImplementation("org.junit.jupiter:junit-jupiter")
