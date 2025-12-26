@@ -11,6 +11,11 @@ import java.time.Duration
 import javax.imageio.ImageIO
 import kotlin.io.path.extension
 
+/**
+ * Day 14: Restroom Redoubt
+ *
+ * https://adventofcode.com/2024/day/14
+ */
 class Day14 {
 
   class Part1 {
