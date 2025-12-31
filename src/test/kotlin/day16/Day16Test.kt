@@ -1,7 +1,6 @@
 package day16
 
 import io.kotest.matchers.shouldBe
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import utils.readInputText
 
@@ -77,17 +76,21 @@ class Day16Test {
     part1.solve(input).shouldBe(135536)
   }
 
-  @Disabled("Not yet implemented")
   @Test
-  fun `part 2 sample input`() {
-    val input = readInputText("day16-sample.txt")
-    part2.solve(input).shouldBe(0)
+  fun `part 2 sample input 1`() {
+    val input = readInputText("day16-sample-1.txt")
+    part2.solve(input).shouldBe(45)
   }
 
-  @Disabled("Not yet implemented")
+  @Test
+  fun `part 2 sample input 2`() {
+    val input = readInputText("day16-sample-2.txt")
+    part2.solve(input).shouldBe(64)
+  }
+
   @Test
   fun `part 2 input`() {
     val input = readInputText("day16-input.txt")
-    part2.solve(input).shouldBe(0)
+    part2.solve(input).shouldBe(583)
   }
 }

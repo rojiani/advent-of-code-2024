@@ -2,6 +2,7 @@ package day16
 
 import common.GridCoordinate
 import kotlin.collections.map
+import kotlin.collections.toList
 
 typealias Maze = List<List<Tile>>
 
@@ -101,47 +102,122 @@ class Day16 {
 
       return minScoreToEnd
     }
-
-    fun Maze.tileAt(coordinate: GridCoordinate): Tile = this[coordinate.row][coordinate.column]
-
-    data class TraversalState(
-      val positionAndDirection: PositionAndDirection,
-      val steps: List<Step>,
-    ) {
-      val score: Int
-        get() = steps.sumOf { it.cost }
-    }
-
-    sealed class Step {
-      abstract val debugString: String
-      abstract val cost: Int
-      abstract val position: GridCoordinate
-
-      data class ClockwiseOnce(override val position: GridCoordinate) : Step() {
-        override val debugString: String = "CW1x"
-        override val cost: Int = TURN_COST
-      }
-
-      data class ClockwiseTwice(override val position: GridCoordinate) : Step() {
-        override val debugString: String = "CW2x"
-        override val cost: Int = 2 * TURN_COST
-      }
-
-      data class CounterClockwiseOnce(override val position: GridCoordinate) : Step() {
-        override val debugString: String = "CCW1x"
-        override val cost: Int = TURN_COST
-      }
-
-      data class Forward(override val position: GridCoordinate, val direction: Direction) : Step() {
-        override val debugString: String = direction.symbol.toString()
-        override val cost: Int = 1
-      }
-    }
   }
 
   class Part2 {
     fun solve(input: String): Int {
-      TODO()
+      val maze = parseInput(input)
+      val startingPositionAndDirection = PositionAndDirection(findStart(maze), STARTING_DIRECTION)
+      val minScorePaths: List<List<Step>> =
+        findMinScorePaths(maze = maze, startingPositionAndDirection = startingPositionAndDirection)
+
+      val bestPathTiles = tilesOnAnyBestPath(minScorePaths)
+      printBestTiles(maze, bestPathTiles)
+      return bestPathTiles.size
+    }
+
+    private fun printBestTiles(maze: List<List<Tile>>, bestPathTiles: Set<GridCoordinate>) {
+      val result: MutableList<MutableList<Char>> =
+        maze.map { row -> row.map { tile -> tile.symbol }.toMutableList() }.toMutableList()
+
+      for (r in maze.indices) {
+        for (c in maze[r].indices) {
+          if (GridCoordinate(r, c) in bestPathTiles) {
+            result[r][c] = 'O'
+          }
+        }
+      }
+
+      println(result.joinToString("\n") { row -> row.joinToString("") })
+    }
+
+    private fun tilesOnAnyBestPath(minScorePaths: List<List<Step>>): Set<GridCoordinate> =
+      minScorePaths.flatMap { path -> path.map { it.position } }.toSet()
+
+    private fun findMinScorePaths(
+      maze: Maze,
+      startingPositionAndDirection: PositionAndDirection,
+    ): List<List<Step>> {
+      val minScorePathFrom = mutableMapOf<PositionAndDirection, Int>()
+      val minPathFrom = mutableMapOf<PositionAndDirection, List<Step>>()
+      val minScorePaths = mutableListOf<List<Step>>()
+      var minScoreToEnd: Int = Int.MAX_VALUE
+
+      val queue = ArrayDeque<TraversalState>()
+      queue.addLast(TraversalState(startingPositionAndDirection, steps = emptyList()))
+
+      while (queue.isNotEmpty()) {
+        val traversalState = queue.removeFirst()
+        val score = traversalState.score
+        val positionAndDirection = traversalState.positionAndDirection
+        val steps = traversalState.steps
+        val position = traversalState.positionAndDirection.position
+
+        if (!position.isValid(maze)) {
+          continue
+        }
+
+        if (maze.tileAt(position) == Tile.WALL) {
+          continue
+        }
+
+        if (maze.tileAt(position) == Tile.END) {
+          val path = steps + Step.End(position)
+          if (score == minScoreToEnd) {
+            minPathFrom[positionAndDirection] = path
+            minScorePaths += path
+          } else if (score < minScoreToEnd) {
+            minPathFrom[positionAndDirection] = path
+            minScorePaths.clear()
+            minScorePaths += path
+          }
+          minScoreToEnd = minOf(minScoreToEnd, score)
+        }
+
+        if (
+          positionAndDirection in minScorePathFrom &&
+            minScorePathFrom.getValue(positionAndDirection) < score
+        ) {
+          continue
+        } else {
+          minScorePathFrom[positionAndDirection] = score
+          minPathFrom[positionAndDirection] = steps.toList()
+        }
+
+        // forward in the same direction
+        queue.addLast(
+          TraversalState(
+            positionAndDirection.forwardPosition,
+            steps = steps + Step.Forward(position, positionAndDirection.direction),
+          )
+        )
+
+        // turn clockwise once
+        queue.addLast(
+          TraversalState(
+            positionAndDirection.clockwiseOnce,
+            steps = steps + Step.ClockwiseOnce(position),
+          )
+        )
+
+        // turn clockwise twice
+        queue.addLast(
+          TraversalState(
+            positionAndDirection.clockwiseTwice,
+            steps = steps + Step.ClockwiseTwice(position),
+          )
+        )
+
+        // counter-clockwise once
+        queue.addLast(
+          TraversalState(
+            positionAndDirection.counterClockwiseOnce,
+            steps = steps + Step.CounterClockwiseOnce(position),
+          )
+        )
+      }
+
+      return minScorePaths.toList()
     }
   }
 }
@@ -158,31 +234,6 @@ enum class Tile(val symbol: Char) {
   companion object {
     fun fromSymbol(symbol: Char): Tile = Tile.values().first { it.symbol == symbol }
   }
-}
-
-data class PositionAndDirection(val position: GridCoordinate, val direction: Direction) {
-  override fun toString(): String = "($position, ${direction.symbol})"
-
-  val forwardPosition: PositionAndDirection
-    get() {
-      val newPosition =
-        when (direction) {
-          Direction.NORTH -> position.up
-          Direction.SOUTH -> position.down
-          Direction.WEST -> position.left
-          Direction.EAST -> position.right
-        }
-      return PositionAndDirection(newPosition, direction)
-    }
-
-  val clockwiseOnce: PositionAndDirection
-    get() = PositionAndDirection(position, direction.turnClockwise())
-
-  val clockwiseTwice: PositionAndDirection
-    get() = PositionAndDirection(position, direction.turnClockwise().turnClockwise())
-
-  val counterClockwiseOnce: PositionAndDirection
-    get() = PositionAndDirection(position, direction.turnCounterClockwise())
 }
 
 enum class Direction(val symbol: Char) {
@@ -221,3 +272,60 @@ private fun findStart(maze: Maze): GridCoordinate {
 
 val STARTING_DIRECTION = Direction.EAST
 const val TURN_COST: Int = 1000
+
+sealed class Step {
+  abstract val cost: Int
+  abstract val position: GridCoordinate
+
+  data class ClockwiseOnce(override val position: GridCoordinate) : Step() {
+    override val cost: Int = TURN_COST
+  }
+
+  data class ClockwiseTwice(override val position: GridCoordinate) : Step() {
+    override val cost: Int = 2 * TURN_COST
+  }
+
+  data class CounterClockwiseOnce(override val position: GridCoordinate) : Step() {
+    override val cost: Int = TURN_COST
+  }
+
+  data class Forward(override val position: GridCoordinate, val direction: Direction) : Step() {
+    override val cost: Int = 1
+  }
+
+  data class End(override val position: GridCoordinate) : Step() {
+    override val cost: Int = 0
+  }
+}
+
+data class PositionAndDirection(val position: GridCoordinate, val direction: Direction) {
+  override fun toString(): String = "($position, ${direction.symbol})"
+
+  val forwardPosition: PositionAndDirection
+    get() {
+      val newPosition =
+        when (direction) {
+          Direction.NORTH -> position.up
+          Direction.SOUTH -> position.down
+          Direction.WEST -> position.left
+          Direction.EAST -> position.right
+        }
+      return PositionAndDirection(newPosition, direction)
+    }
+
+  val clockwiseOnce: PositionAndDirection
+    get() = PositionAndDirection(position, direction.turnClockwise())
+
+  val clockwiseTwice: PositionAndDirection
+    get() = PositionAndDirection(position, direction.turnClockwise().turnClockwise())
+
+  val counterClockwiseOnce: PositionAndDirection
+    get() = PositionAndDirection(position, direction.turnCounterClockwise())
+}
+
+fun Maze.tileAt(coordinate: GridCoordinate): Tile = this[coordinate.row][coordinate.column]
+
+data class TraversalState(val positionAndDirection: PositionAndDirection, val steps: List<Step>) {
+  val score: Int
+    get() = steps.sumOf { it.cost }
+}
