@@ -1,6 +1,5 @@
 package day15
 
-import com.google.common.base.Preconditions.checkArgument
 import common.GridCoordinate
 import kotlin.collections.indices
 import kotlin.collections.joinToString
@@ -260,7 +259,7 @@ class Day15Part2 {
   }
 
   private fun Array<Array<Space>>.set(coordinate: GridCoordinate, space: Space) {
-    checkArgument(coordinate.isValid(this)) { "Can't set out of bounds space: $coordinate" }
+    require(coordinate.isValid(this)) { "Can't set out of bounds space: $coordinate" }
     this[coordinate.row][coordinate.column] = space
   }
 
