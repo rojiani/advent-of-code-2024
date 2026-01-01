@@ -85,3 +85,5 @@ enum class OperandType {
   LITERAL,
   COMBO,
 }
+
+data class ProgramStatement(val instruction: Instruction, val operand: Int)

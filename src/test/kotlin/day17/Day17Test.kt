@@ -82,4 +82,24 @@ class Day17Test {
     val input = readInputText("day17/day17-input.txt")
     part1.solve(input).shouldBe("3,1,4,3,1,7,1,6,3")
   }
+
+  @Test
+  fun `part 2 sample input`() {
+    val input =
+      """
+      Register A: 2024
+      Register B: 0
+      Register C: 0
+
+      Program: 0,3,5,4,3,0
+      """
+        .trimIndent()
+    part2.solve(input).shouldBe(117440)
+  }
+
+  @Test
+  fun `part 2 input`() {
+    val input = readInputText("day17/day17-input.txt")
+    part2.solve(input).shouldBe(37221270076916L)
+  }
 }

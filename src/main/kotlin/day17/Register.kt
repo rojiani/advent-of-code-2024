@@ -1,18 +1,18 @@
 package day17
 
-class Register(val id: RegisterId, initialValue: Int) {
+class Register(val id: RegisterId, initialValue: Long) {
   private var value = initialValue
 
-  val currentValue: Int
+  val currentValue: Long
     get() = value
 
   /** Perform bitwise XOR of the register's value and the given operand. */
-  fun xor(operand: Int): Int {
+  fun xor(operand: Long): Long {
     value = value xor operand
     return value
   }
 
-  internal fun setValue(newValue: Int): Int {
+  internal fun setValue(newValue: Long): Long {
     value = newValue
     return value
   }

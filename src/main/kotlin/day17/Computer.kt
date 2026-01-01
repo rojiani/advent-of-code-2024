@@ -1,5 +1,6 @@
 package day17
 
+import kotlin.collections.lastIndex
 import kotlin.math.pow
 
 class Computer(
@@ -68,26 +69,26 @@ class Computer(
   private fun registerDivision(register: Register, operand: Int, operandType: OperandType?) {
     val comboOperandValue: Int = valueOf(operand, operandType)
     // The numerator is always the value in the A register.
-    val numerator: Int = registerA.currentValue
-    val denominator: Int = 2.0.pow(comboOperandValue).toInt()
+    val numerator: Long = registerA.currentValue
+    val denominator: Long = 2.0.pow(comboOperandValue).toLong()
     val quotient = numerator / denominator
     register.setValue(quotient)
     instructionPointer += 1
   }
 
   private fun executeBxl(instruction: Instruction, operand: Int) {
-    registerB.xor(valueOf(operand, instruction.operandType))
+    registerB.xor(valueOf(operand, instruction.operandType).toLong())
     instructionPointer += 1
   }
 
   private fun executeBst(instruction: Instruction, operand: Int) {
-    val operandValueMod8: Int = valueOf(operand, instruction.operandType) % 8
+    val operandValueMod8: Long = valueOf(operand, instruction.operandType).mod(8).toLong()
     registerB.setValue(operandValueMod8)
     instructionPointer += 1
   }
 
   private fun executeJnz(instruction: Instruction, operand: Int) {
-    if (registerA.currentValue == 0) {
+    if (registerA.currentValue == 0L) {
       instructionPointer += 1
       return
     }
@@ -111,7 +112,7 @@ class Computer(
   }
 
   private fun executeOut(instruction: Instruction, operand: Int) {
-    val operandValueMod8: Int = valueOf(operand, instruction.operandType) % 8
+    val operandValueMod8: Int = valueOf(operand, instruction.operandType).mod(8)
     output += operandValueMod8
     instructionPointer += 1
   }
@@ -123,9 +124,9 @@ class Computer(
       OperandType.COMBO ->
         when (operand) {
           in 0..3 -> operand
-          4 -> registerA.currentValue
-          5 -> registerB.currentValue
-          6 -> registerC.currentValue
+          4 -> registerA.currentValue.toInt()
+          5 -> registerB.currentValue.toInt()
+          6 -> registerC.currentValue.toInt()
           else -> error("Unexpected combo operand: $operand")
         }
     }
@@ -143,8 +144,8 @@ class Computer(
 }
 
 data class ComputerState(
-  val registerAValue: Int,
-  val registerBValue: Int,
-  val registerCValue: Int,
+  val registerAValue: Long,
+  val registerBValue: Long,
+  val registerCValue: Long,
   val output: String,
 )
