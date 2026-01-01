@@ -73,13 +73,13 @@ class Day17Test {
 
   @Test
   fun `part 1 sample input`() {
-    val input = readInputText("day17-sample.txt")
+    val input = readInputText("day17/day17-sample.txt")
     part1.solve(input).shouldBe("4,6,3,5,6,3,5,2,1,0")
   }
 
   @Test
   fun `part 1 input`() {
-    val input = readInputText("day17-input.txt")
+    val input = readInputText("day17/day17-input.txt")
     part1.solve(input).shouldBe("3,1,4,3,1,7,1,6,3")
   }
 }

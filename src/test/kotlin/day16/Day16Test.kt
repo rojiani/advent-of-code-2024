@@ -60,37 +60,37 @@ class Day16Test {
 
   @Test
   fun `part 1 sample input 1`() {
-    val input = readInputText("day16-sample-1.txt")
+    val input = readInputText("day16/day16-sample-1.txt")
     part1.solve(input).shouldBe(7036)
   }
 
   @Test
   fun `part 1 sample input 2`() {
-    val input = readInputText("day16-sample-2.txt")
+    val input = readInputText("day16/day16-sample-2.txt")
     part1.solve(input).shouldBe(11048)
   }
 
   @Test
   fun `part 1 input`() {
-    val input = readInputText("day16-input.txt")
+    val input = readInputText("day16/day16-input.txt")
     part1.solve(input).shouldBe(135536)
   }
 
   @Test
   fun `part 2 sample input 1`() {
-    val input = readInputText("day16-sample-1.txt")
+    val input = readInputText("day16/day16-sample-1.txt")
     part2.solve(input).shouldBe(45)
   }
 
   @Test
   fun `part 2 sample input 2`() {
-    val input = readInputText("day16-sample-2.txt")
+    val input = readInputText("day16/day16-sample-2.txt")
     part2.solve(input).shouldBe(64)
   }
 
   @Test
   fun `part 2 input`() {
-    val input = readInputText("day16-input.txt")
+    val input = readInputText("day16/day16-input.txt")
     part2.solve(input).shouldBe(583)
   }
 }

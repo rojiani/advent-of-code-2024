@@ -20,13 +20,13 @@ class Day11Test {
 
   @Test
   fun `part 1 sample input`() {
-    val input = readInputText("day11-sample.txt")
+    val input = readInputText("day11/day11-sample.txt")
     part1.solve(input, blinks = 25).shouldBe(55312)
   }
 
   @Test
   fun `part 1 input`() {
-    val input = readInputText("day11-input.txt")
+    val input = readInputText("day11/day11-input.txt")
     part1.solve(input, blinks = 25).shouldBe(200446)
   }
 
@@ -55,19 +55,19 @@ class Day11Test {
 
   @Test
   fun `part 2 sample input`() {
-    val input = readInputText("day11-sample.txt")
+    val input = readInputText("day11/day11-sample.txt")
     part2.solve(input, blinks = 25).shouldBe(55312L)
   }
 
   @Test
   fun `part 2 input - 25 blinks`() {
-    val input = readInputText("day11-input.txt")
+    val input = readInputText("day11/day11-input.txt")
     part2.solve(input, blinks = 25).shouldBe(200446L)
   }
 
   @Test
   fun `part 2 input`() {
-    val input = readInputText("day11-input.txt")
+    val input = readInputText("day11/day11-input.txt")
     part2.solve(input).shouldBe(238317474993392L)
   }
 }

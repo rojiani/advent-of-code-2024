@@ -202,7 +202,7 @@ class Day15Part2Test {
 
   @Test
   fun `part 2 sample input - grid after all moves`() {
-    val input = readInputText("day15-sample.txt")
+    val input = readInputText("day15/day15-sample.txt")
     part2
       .state(part2.gridAfterMoves(input))
       .shouldBe(
@@ -372,13 +372,13 @@ class Day15Part2Test {
 
   @Test
   fun `part 2 sample input`() {
-    val input = readInputText("day15-sample.txt")
+    val input = readInputText("day15/day15-sample.txt")
     part2.solve(input).shouldBe(9021L)
   }
 
   @Test
   fun `part 2 input`() {
-    val input = readInputText("day15-input.txt")
+    val input = readInputText("day15/day15-input.txt")
     part2.solve(input).shouldBe(1392847L)
   }
 

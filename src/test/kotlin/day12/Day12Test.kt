@@ -107,13 +107,13 @@ class Day12Test {
 
   @Test
   fun `part 1 sample`() {
-    val input = readInputText("day12-sample.txt")
+    val input = readInputText("day12/day12-sample.txt")
     part1.solve(input) shouldBe 1930L
   }
 
   @Test
   fun `part 1 input`() {
-    val input = readInputText("day12-input.txt")
+    val input = readInputText("day12/day12-input.txt")
     part1.solve(input) shouldBe 1431316L
   }
 
@@ -186,13 +186,13 @@ class Day12Test {
 
   @Test
   fun `part 2 sample`() {
-    val input = readInputText("day12-sample.txt")
+    val input = readInputText("day12/day12-sample.txt")
     part2.solve(input) shouldBe 1206L
   }
 
   @Test
   fun `part 2 input`() {
-    val input = readInputText("day12-input.txt")
+    val input = readInputText("day12/day12-input.txt")
     part2.solve(input) shouldBe 821428L
   }
 

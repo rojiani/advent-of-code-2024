@@ -1,4 +1,4 @@
-src/main/resources/inputs/*input.txt
+src/main/resources/inputs/**/*input.txt
 
 .gradle
 build/

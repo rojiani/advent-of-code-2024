@@ -30,13 +30,13 @@ class Day13Test {
 
   @Test
   fun `part 1 sample input`() {
-    val input = readInputText("day13-sample.txt")
+    val input = readInputText("day13/day13-sample.txt")
     part1.solve(input).shouldBe(200L + 280L)
   }
 
   @Test
   fun `part 1 input`() {
-    val input = readInputText("day13-input.txt")
+    val input = readInputText("day13/day13-input.txt")
     part1.solve(input).shouldBe(29517L)
   }
 
@@ -65,7 +65,7 @@ class Day13Test {
 
   @Test
   fun `part 2 sample input`() {
-    val input = readInputText("day13-sample.txt")
+    val input = readInputText("day13/day13-sample.txt")
     val machine2Tokens = 459236326669L
     val machine4Tokens = 416082282239L
     part2.solve(input).shouldBe(machine2Tokens + machine4Tokens)
@@ -73,7 +73,7 @@ class Day13Test {
 
   @Test
   fun `part 2 input`() {
-    val input = readInputText("day13-input.txt")
+    val input = readInputText("day13/day13-input.txt")
     part2.solve(input).shouldBe(103570327981381)
   }
 

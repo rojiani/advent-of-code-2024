@@ -36,7 +36,7 @@ class Day14Test {
 
   @Test
   fun `part 1 sample input - final positions`() {
-    val input = readInputText("day14-sample.txt")
+    val input = readInputText("day14/day14-sample.txt")
     val robots = parseInput(input)
     part1
       .getAllFinalPositions(robots, dimensions = Dimensions(x = 11, y = 7), seconds = 100)
@@ -58,21 +58,21 @@ class Day14Test {
 
   @Test
   fun `part 1 sample input`() {
-    val input = readInputText("day14-sample.txt")
+    val input = readInputText("day14/day14-sample.txt")
     val robots = parseInput(input)
     part1.solve(robots, dimensions = Dimensions(x = 11, y = 7), seconds = 100).shouldBe(12)
   }
 
   @Test
   fun `part 1 input`() {
-    val input = readInputText("day14-input.txt")
+    val input = readInputText("day14/day14-input.txt")
     part1.solve(input).shouldBe(225521010)
   }
 
   @Disabled("The code generates images that need to be manually inspected")
   @Test
   fun `part 2 input`() {
-    val input = readInputText("day14-input.txt")
+    val input = readInputText("day14/day14-input.txt")
     part2.solve(input).shouldBe(7774)
   }
 }

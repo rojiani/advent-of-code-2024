@@ -267,7 +267,7 @@ class Day15Part1Test {
 
   @Test
   fun `sample input - grid after all moves`() {
-    val input = readInputText("day15-sample.txt")
+    val input = readInputText("day15/day15-sample.txt")
     part1
       .state(part1.gridAfterMoves(input))
       .shouldBe(
@@ -294,211 +294,15 @@ class Day15Part1Test {
 
   @Test
   fun `sample input`() {
-    val input = readInputText("day15-sample.txt")
+    val input = readInputText("day15/day15-sample.txt")
     part1.solve(input).shouldBe(10092L)
   }
 
   @Test
   fun input() {
-    val input = readInputText("day15-input.txt")
+    val input = readInputText("day15/day15-input.txt")
     part1.solve(input).shouldBe(1371036L)
   }
-
-  //
-  //  @Test
-  //  fun `part 2 example input - grid after moves`() {
-  //    // Initial state:
-  //    part2
-  //      .gridAfterMoves(PART_2_SMALL_EXAMPLE, numMoves = 0)
-  //      .state()
-  //      .shouldBe(
-  //        """
-  //        ##############
-  //        ##......##..##
-  //        ##..........##
-  //        ##....[][]@.##
-  //        ##....[]....##
-  //        ##..........##
-  //        ##############
-  //        """
-  //          .trimIndent()
-  //      )
-  //
-  //    // Move <:
-  //    part2
-  //      .gridAfterMoves(PART_2_SMALL_EXAMPLE, numMoves = 1)
-  //      .state()
-  //      .shouldBe(
-  //        """
-  //        ##############
-  //        ##......##..##
-  //        ##..........##
-  //        ##...[][]@..##
-  //        ##....[]....##
-  //        ##..........##
-  //        ##############
-  //        """
-  //          .trimIndent()
-  //      )
-  //    // Move v:
-  //    part2
-  //      .gridAfterMoves(PART_2_SMALL_EXAMPLE, numMoves = 2)
-  //      .state()
-  //      .shouldBe(
-  //        """
-  //        ##############
-  //        ##......##..##
-  //        ##..........##
-  //        ##...[][]...##
-  //        ##....[].@..##
-  //        ##..........##
-  //        ##############
-  //        """
-  //          .trimIndent()
-  //      )
-  //    // Move v:
-  //    part2
-  //      .gridAfterMoves(PART_2_SMALL_EXAMPLE, numMoves = 3)
-  //      .state()
-  //      .shouldBe(
-  //        """
-  //        ##############
-  //        ##......##..##
-  //        ##..........##
-  //        ##...[][]...##
-  //        ##....[]....##
-  //        ##.......@..##
-  //        ##############
-  //        """
-  //          .trimIndent()
-  //      )
-  //
-  //    // Move <:
-  //    part2
-  //      .gridAfterMoves(PART_2_SMALL_EXAMPLE, numMoves = 4)
-  //      .state()
-  //      .shouldBe(
-  //        """
-  //        ##############
-  //        ##......##..##
-  //        ##..........##
-  //        ##...[][]...##
-  //        ##....[]....##
-  //        ##......@...##
-  //        ##############
-  //        """
-  //          .trimIndent()
-  //      )
-  //
-  //    // Move <:
-  //    part2
-  //      .gridAfterMoves(PART_2_SMALL_EXAMPLE, numMoves = 5)
-  //      .state()
-  //      .shouldBe(
-  //        """
-  //        ##############
-  //        ##......##..##
-  //        ##..........##
-  //        ##...[][]...##
-  //        ##....[]....##
-  //        ##.....@....##
-  //        ##############
-  //        """
-  //          .trimIndent()
-  //      )
-  //
-  //    // Move ^:
-  //    part2
-  //      .gridAfterMoves(PART_2_SMALL_EXAMPLE, numMoves = 6)
-  //      .state()
-  //      .shouldBe(
-  //        """
-  //        ##############
-  //        ##......##..##
-  //        ##...[][]...##
-  //        ##....[]....##
-  //        ##.....@....##
-  //        ##..........##
-  //        ##############
-  //        """
-  //          .trimIndent()
-  //      )
-  //
-  //    //
-  //    // Move ^:
-  //    // ##############
-  //    // ##......##..##
-  //    // ##...[][]...##
-  //    // ##....[]....##
-  //    // ##.....@....##
-  //    // ##..........##
-  //    // ##############
-  //    //
-  //    // Move <:
-  //    // ##############
-  //    // ##......##..##
-  //    // ##...[][]...##
-  //    // ##....[]....##
-  //    // ##....@.....##
-  //    // ##..........##
-  //    // ##############
-  //    //
-  //    // Move <:
-  //    // ##############
-  //    // ##......##..##
-  //    // ##...[][]...##
-  //    // ##....[]....##
-  //    // ##...@......##
-  //    // ##..........##
-  //    // ##############
-  //    //
-  //    // Move ^:
-  //    // ##############
-  //    // ##......##..##
-  //    // ##...[][]...##
-  //    // ##...@[]....##
-  //    // ##..........##
-  //    // ##..........##
-  //    // ##############
-  //    //
-  //    // Move ^:
-  //    // ##############
-  //    // ##...[].##..##
-  //    // ##...@.[]...##
-  //    // ##....[]....##
-  //    // ##..........##
-  //    // ##..........##
-  //    // ##############
-  //  }
-  //
-  //  @Test
-  //  fun `part 2 sample input - grid after all moves`() {
-  //    val input = readInputText("day15-sample.txt")
-  //    part2
-  //      .gridAfterMoves(input)
-  //      .state()
-  //      .shouldBe(
-  //        """
-  //        ####################
-  //        ##[].......[].[][]##
-  //        ##[]...........[].##
-  //        ##[]........[][][]##
-  //        ##[]......[]....[]##
-  //        ##..##......[]....##
-  //        ##..[]............##
-  //        ##..@......[].[][]##
-  //        ##......[][]..[]..##
-  //        ####################
-  //        """
-  //          .trimIndent()
-  //      )
-  //  }
-  //
-  //  @Test
-  //  fun `part 2 sample input`() {
-  //    val input = readInputText("day15-sample.txt")
-  //    part2.solve(input).shouldBe(9021L)
-  //  }
 
   companion object {
     private val SMALL_EXAMPLE =
@@ -513,20 +317,6 @@ class Day15Part1Test {
       ########
 
       <^^>>>vv<v>>v<<
-      """
-        .trimIndent()
-
-    private val PART_2_SMALL_EXAMPLE =
-      """
-      #######
-      #...#.#
-      #.....#
-      #..OO@#
-      #..O..#
-      #.....#
-      #######
-
-      <vv<<^^<<^^
       """
         .trimIndent()
   }
