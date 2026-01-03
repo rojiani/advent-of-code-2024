@@ -19,4 +19,16 @@ class Day19Test {
     val input = readInputText("day19/day19-input.txt")
     part1.solve(input).shouldBe(236)
   }
+
+  @Test
+  fun `part 2 sample input`() {
+    val input = readInputText("day19/day19-sample.txt")
+    part2.solve(input).shouldBe(16L)
+  }
+
+  @Test
+  fun `part 2 input`() {
+    val input = readInputText("day19/day19-input.txt")
+    part2.solve(input).shouldBe(643685981770598L)
+  }
 }

@@ -64,8 +64,46 @@ class Day19 {
   }
 
   class Part2 {
-    fun solve(input: String): Int {
-      TODO()
+    fun solve(input: String): Long {
+      val lines = input.lines()
+      val availablePatterns: Set<String> = lines.first().split(", ").toSet()
+
+      val desiredPatterns = lines.drop(2).toSet()
+
+      return desiredPatterns.sumOf { pattern -> makePattern(pattern, availablePatterns) }
     }
+
+    private fun makePattern(pattern: String, availablePatterns: Set<String>): Long {
+      val waysToMakePattern = mutableMapOf<String, Long>()
+      makePattern(
+        remainingPattern = pattern,
+        availablePatterns = availablePatterns,
+        waysToMakePattern = waysToMakePattern,
+      )
+      return waysToMakePattern.getOrDefault(pattern, 0L)
+    }
+
+    private fun makePattern(
+      remainingPattern: String,
+      availablePatterns: Set<String>,
+      waysToMakePattern: MutableMap<String, Long>,
+    ): Long =
+      when {
+        remainingPattern.isEmpty() -> 1
+        else ->
+          waysToMakePattern.getOrPut(remainingPattern) {
+            availablePatterns.sumOf { availablePattern ->
+              if (remainingPattern.startsWith(availablePattern)) {
+                makePattern(
+                  remainingPattern = remainingPattern.drop(availablePattern.length),
+                  availablePatterns = availablePatterns,
+                  waysToMakePattern = waysToMakePattern,
+                )
+              } else {
+                0
+              }
+            }
+          }
+      }
   }
 }
